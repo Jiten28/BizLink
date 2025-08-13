@@ -117,13 +117,11 @@ Recommended screenshots:
 ## 📦 Deployment
 
 This project is deployed on **Vercel**.
-To deploy:
 
-1. Push your code to GitHub
-2. Import repo in Vercel
-3. Build Command: `npm run build`
-4. Output Directory: `dist`
-5. Deploy and share your live link
+---
+
+##  Live Demo  
+Try the app live: [https://biz-link-alpha.vercel.app](https://biz-link-alpha.vercel.app)
 
 ---
 
