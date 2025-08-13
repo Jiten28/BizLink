@@ -1,5 +1,5 @@
 export default function Header({ theme, setTheme }) {
-    eturn (
+    return (
     <header className="flex items-center justify-between p-4 md:px-8 bg-white/60 dark:bg-gray-900/60 backdrop-blur sticky top-0 z-20">
         <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-[#222831] flex items-center justify-center text-white font-bold">
