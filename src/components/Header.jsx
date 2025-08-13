@@ -25,7 +25,7 @@ export default function Header({ theme, setTheme }) {
             {theme === "dark" ? "Light" : "Dark"}
         </button>
         <div className="text-xs text-gray-600 dark:text-gray-300">
-            Logged in as <strong>Tobi</strong>
+            Logged in as <strong>Jiten Kumar</strong>
         </div>
         </div>
     </header>

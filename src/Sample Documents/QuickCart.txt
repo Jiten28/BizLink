@@ -1,0 +1,37 @@
+Company Name: QuickCart Technologies Pvt. Ltd.
+Industry: E-commerce SaaS Platform
+Headquarters: Bengaluru, India
+Incorporation Date: April 2018
+
+Financial Summary (FY 2024):
+- Annual Revenue: ₹8.4 Crores
+- Gross Margin: 72%
+- Net Profit: ₹1.2 Crores
+- Year-over-Year Growth: 18%
+- Customer Churn Rate: 4%
+- Monthly Active Users (MAU): 56,000
+- Average Revenue Per User (ARPU): ₹1250
+
+Assets & Liabilities:
+- Cash & Equivalents: ₹3.5 Crores
+- Accounts Receivable: ₹50 Lakhs
+- Intellectual Property: Proprietary AI-driven recommendation engine
+- Liabilities: ₹1.1 Crores (Vendor payables + long-term debt)
+
+Legal & Compliance:
+- GST filings up to date
+- No pending legal disputes
+- ISO 27001 certified (Information Security)
+
+Key Risks:
+- Revenue concentration: Top 3 clients = 38% of total revenue
+- Competitive pressure from global SaaS platforms
+- Need for infrastructure scaling to support growth
+
+Opportunities:
+- Expansion into Southeast Asia within 12 months
+- Partnership discussions with two major logistics companies
+- Potential for white-labeling the recommendation engine to SMEs
+
+Conclusion:
+QuickCart Technologies is a profitable, growing SaaS company with strong retention metrics and healthy margins, positioned for international expansion. Buyer should monitor revenue concentration and ensure infrastructure scaling matches growth trajectory.

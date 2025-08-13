@@ -1,0 +1,37 @@
+Company Name: MedixCare Analytics Pvt. Ltd.
+Industry: Healthcare Data Analytics
+Headquarters: Hyderabad, India
+Incorporation Date: January 2020
+
+Financial Summary (FY 2024):
+- Annual Revenue: ₹5.6 Crores
+- Gross Margin: 68%
+- Net Profit: ₹80 Lakhs
+- Year-over-Year Growth: 25%
+- Customer Churn Rate: 6%
+- Monthly Active Users (MAU): 42,000
+- Average Revenue Per User (ARPU): ₹1100
+
+Assets & Liabilities:
+- Cash & Equivalents: ₹2.8 Crores
+- Accounts Receivable: ₹35 Lakhs
+- Intellectual Property: HIPAA-compliant analytics platform & predictive health AI model
+- Liabilities: ₹90 Lakhs (Short-term debt + operational payables)
+
+Legal & Compliance:
+- HIPAA and GDPR compliant
+- ISO 13485 certified (Medical Devices Quality)
+- No ongoing litigation
+
+Key Risks:
+- Dependency on US market for 70% of revenue
+- Increasing regulatory complexity in cross-border data transfer
+- Rising cloud infrastructure costs
+
+Opportunities:
+- Launch of AI-driven early diagnosis tool in Q3 2025
+- Strategic partnership with two top hospital chains in India
+- Entry into telemedicine analytics space
+
+Conclusion:
+MedixCare Analytics has a strong foothold in healthcare data analytics, with diversified service offerings and promising expansion opportunities. Buyer should address high dependency on US clients and manage regulatory risks proactively.

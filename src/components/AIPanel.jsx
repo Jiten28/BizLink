@@ -1,38 +1,64 @@
-import { useMemo } from "react";
-
 export default function AIPanel({ visible, documentText, onClose }) {
-    if (!visible) return null;
+  if (!visible) return null;
 
-    const summary = useMemo(() => {
-    if (!documentText)
-        return "No document uploaded. Upload a financial or legal document to see a summary.";
-    const sentences = documentText.split(".").filter(Boolean);
-    return (
-        sentences.slice(0, 2).join(". ") +
-        (sentences.length > 2 ? "..." : "")
-    );
-    }, [documentText]);
+  function analyzeText(text) {
+    const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+    const summary = lines.slice(0, 3).join(" ");
 
-    return (
-    <div className="fixed right-4 top-20 w-96 p-4 rounded-lg bg-white dark:bg-[#222831] shadow-lg border">
-        <div className="flex items-start justify-between">
-        <h4 className="font-semibold">AI Document Analyzer</h4>
-        <button onClick={onClose} className="text-sm text-gray-500">
+    const riskIndex = lines.findIndex((l) => l.toLowerCase().includes("risk"));
+    const risks = riskIndex !== -1
+      ? lines.slice(riskIndex + 1).filter((l) => l.startsWith("-")).map((l) => l.replace(/^-/, "").trim())
+      : [];
+
+    const oppIndex = lines.findIndex((l) => l.toLowerCase().includes("opportunit"));
+    const opportunities = oppIndex !== -1
+      ? lines.slice(oppIndex + 1).filter((l) => l.startsWith("-")).map((l) => l.replace(/^-/, "").trim())
+      : [];
+
+    return { summary, risks, opportunities };
+  }
+
+  const { summary, risks, opportunities } = analyzeText(documentText);
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white dark:bg-[#222831] p-6 rounded-lg w-full max-w-lg shadow-lg overflow-auto max-h-[90vh]">
+        <h2 className="text-xl font-semibold mb-4">AI Document Analysis</h2>
+
+        <h3 className="font-semibold">Summary</h3>
+        <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">{summary}</p>
+
+        {risks.length > 0 && (
+          <>
+            <h3 className="font-semibold">Risks</h3>
+            <ul className="list-disc pl-5 mb-4">
+              {risks.map((risk, idx) => (
+                <li key={idx} className="text-sm text-red-600 dark:text-red-400">{risk}</li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {opportunities.length > 0 && (
+          <>
+            <h3 className="font-semibold">Opportunities</h3>
+            <ul className="list-disc pl-5 mb-4">
+              {opportunities.map((opp, idx) => (
+                <li key={idx} className="text-sm text-green-600 dark:text-green-400">{opp}</li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <div className="flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded bg-[#00ADB5] text-black font-semibold"
+          >
             Close
-        </button>
+          </button>
         </div>
-        <div className="mt-3 text-sm text-gray-700 dark:text-gray-200">
-        <div className="mb-2 text-xs text-gray-500">Summary</div>
-        <div className="p-3 rounded bg-gray-50 dark:bg-[#393E46]">
-            {summary}
-        </div>
-        <div className="mt-3 text-xs text-gray-500">Risk Insights</div>
-        <ul className="list-disc list-inside text-sm mt-1">
-            <li>Revenue concentration: medium</li>
-            <li>Customer churn: low</li>
-            <li>Legal flags: none found</li>
-        </ul>
-        </div>
+      </div>
     </div>
-    );
+  );
 }

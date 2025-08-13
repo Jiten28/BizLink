@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Landing from "./components/Landing";
 import OnboardingForm from "./components/OnboardingForm";
@@ -6,6 +6,7 @@ import ProfileCard from "./components/ProfileCard";
 import Dashboard from "./components/Dashboard";
 import AIPanel from "./components/AIPanel";
 
+// Example buyers shown to SELLERS in the Browse stage
 const MOCK_BUYERS = [
   {
     id: "b1",
@@ -32,110 +33,117 @@ const MOCK_BUYERS = [
 ];
 
 export default function App() {
+  // theme + dark mode
   const [theme, setTheme] = useState("dark");
-  const [stage, setStage] = useState("landing");
-  const [role, setRole] = useState(null);
-  const [buyers, setBuyers] = useState(MOCK_BUYERS);
-  const [selectedMatch, setSelectedMatch] = useState(null);
-  const [aiVisible, setAiVisible] = useState(false);
-  const [docText, setDocText] = useState("");
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "dark") root.classList.add("dark");
+    else root.classList.remove("dark");
+  }, [theme]);
 
-  function handleChoose(r) {
-    setRole(r);
+  // app state
+  const [stage, setStage] = useState("landing");     // landing | onboarding | browse | dashboard
+  const [role, setRole] = useState(null);            // "buyer" | "seller"
+  const [buyers, setBuyers] = useState(MOCK_BUYERS); // shown to sellers
+  const [activeMatch, setActiveMatch] = useState(null);
+
+  // doc analysis state
+  const [documentText, setDocumentText] = useState("");
+  const [showAIPanel, setShowAIPanel] = useState(false);
+
+  // --- navigation handlers ---
+  function handleChoose(chosenRole) {
+    setRole(chosenRole);
     setStage("onboarding");
   }
 
-  function handleOnboardingComplete() {
+  // called by OnboardingForm; auto-fills match for buyers
+  function handleOnboardingComplete(formData) {
+    if (formData?.demoMatch) setActiveMatch(formData.demoMatch);
+
     if (role === "seller") setStage("browse");
     else setStage("dashboard");
   }
 
-  function acceptBuyer(buyer) {
-    setSelectedMatch(buyer);
+  // seller actions on Browse page
+  function acceptBuyer(b) {
+    // transform buyer card -> match shape expected by Dashboard
+    setActiveMatch({
+      name: b.name,
+      industry: Array.isArray(b.industries) ? b.industries.join(", ") : b.industries,
+      revenue: b.budget,
+      location: b.location,
+      summary: b.bio || "Qualified buyer with strong interest.",
+    });
     setStage("dashboard");
   }
-
-  function rejectBuyer(buyer) {
-    setBuyers((prev) => prev.filter((b) => b.id !== buyer.id));
+  function rejectBuyer(b) {
+    setBuyers(prev => prev.filter(x => x.id !== b.id));
   }
 
   return (
-    <div className={theme === "dark" ? "dark" : ""}>
-      <div className="min-h-screen bg-[#EEEEEE] dark:bg-[#121217] text-gray-900 dark:text-gray-100 transition-colors">
-        <Header theme={theme} setTheme={setTheme} />
+    <div className="min-h-screen bg-[#EEEEEE] dark:bg-[#121217] text-gray-900 dark:text-gray-100 transition-colors">
+      <Header theme={theme} setTheme={setTheme} />
 
-        <main className="p-4 md:p-8">
-          {stage === "landing" && <Landing onChoose={handleChoose} />}
+      <main className="p-4 md:p-8">
+        {/* Landing uses ALL components later; starts the flow */}
+        {stage === "landing" && <Landing onChoose={handleChoose} />}
 
-          {stage === "onboarding" && (
-            <OnboardingForm role={role} onComplete={handleOnboardingComplete} />
-          )}
+        {/* Onboarding (Buyer/Seller) */}
+        {stage === "onboarding" && (
+          <OnboardingForm role={role} onComplete={handleOnboardingComplete} />
+        )}
 
-          {stage === "browse" && (
-            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Buyer Matches</h3>
-                <div className="space-y-4">
-                  {buyers.map((b) => (
-                    <ProfileCard
-                      key={b.id}
-                      buyer={b}
-                      onAccept={acceptBuyer}
-                      onReject={rejectBuyer}
-                      onView={(b) => {
-                        setSelectedMatch(b);
-                        setStage("dashboard");
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div>
-                <Dashboard
-                  selectedMatch={selectedMatch}
-                  onAnalyze={() => setAiVisible(true)}
-                />
-                <div className="mt-4 p-4 rounded bg-white dark:bg-[#222831]">
-                  <h4 className="font-semibold mb-2">Upload Document (mock)</h4>
-                  <textarea
-                    value={docText}
-                    onChange={(e) => setDocText(e.target.value)}
-                    placeholder="Paste a financial summary or term sheet here"
-                    className="w-full h-32 p-2 rounded border dark:bg-[#393E46]"
-                  ></textarea>
-                  <div className="flex justify-end mt-2">
-                    <button
-                      onClick={() => setAiVisible(true)}
-                      className="px-3 py-2 rounded bg-[#00ADB5] text-black"
-                    >
-                      Run AI Analyze
-                    </button>
-                  </div>
-                </div>
+        {/* SELLER Browse: shows ProfileCard list + Dashboard side-by-side */}
+        {stage === "browse" && (
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-xl font-semibold mb-3">Buyer Matches</h3>
+              <div className="space-y-4">
+                {buyers.map(b => (
+                  <ProfileCard
+                    key={b.id}
+                    buyer={b}
+                    onAccept={acceptBuyer}
+                    onReject={rejectBuyer}
+                    onView={acceptBuyer}
+                  />
+                ))}
               </div>
             </div>
-          )}
 
-          {stage === "dashboard" && (
-            <div className="max-w-5xl mx-auto">
-              <Dashboard
-                selectedMatch={selectedMatch}
-                onAnalyze={() => setAiVisible(true)}
-              />
-            </div>
-          )}
-        </main>
+            <Dashboard
+              role={role}
+              activeMatch={activeMatch}
+              onAnalyzeDocs={() => setShowAIPanel(true)}
+              setDocumentText={setDocumentText}
+            />
+          </div>
+        )}
 
-        <AIPanel
-          visible={aiVisible}
-          documentText={docText}
-          onClose={() => setAiVisible(false)}
-        />
+        {/* BUYER Dashboard */}
+        {stage === "dashboard" && (
+          <div className="max-w-6xl mx-auto">
+            <Dashboard
+              role={role}
+              activeMatch={activeMatch}
+              onAnalyzeDocs={() => setShowAIPanel(true)}
+              setDocumentText={setDocumentText}
+            />
+          </div>
+        )}
+      </main>
 
-        <footer className="p-4 text-center text-xs text-gray-500">
-          Built for Caprae Capital - BizLink demo
-        </footer>
-      </div>
+      {/* AI Panel */}
+      <AIPanel
+        visible={showAIPanel}
+        documentText={documentText}
+        onClose={() => setShowAIPanel(false)}
+      />
+
+      <footer className="p-4 text-center text-xs text-gray-500">
+        Built for Caprae Capital — BizLink demo
+      </footer>
     </div>
   );
 }
