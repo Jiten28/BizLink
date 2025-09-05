@@ -142,7 +142,7 @@ export default function App() {
       />
 
       <footer className="p-4 text-center text-xs text-gray-500">
-        Built for Caprae Capital — BizLink demo
+        Built by Jiten Kumar — BizLink demo
       </footer>
     </div>
   );
